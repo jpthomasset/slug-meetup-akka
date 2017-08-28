@@ -1,0 +1,29 @@
+* TODO Intro
+** Avencall & Team
+** XiVO
+** Test 
+* TODO Scala
+** Cake Pattern
+- Principe
+- Benefits
+- Drawbacks
+  - Overuse (self-type)
+  - Misuse (mixin wrong traits because of)
+  - Limitation
+- Conclusion
+  - Prefer clear separation of concerns
+
+** Test Driven Development
+
+
+* TODO Akka
+** Intro (Principles)
+** Actor Hierarchy 
+** Actor Reference
+ActorRef vs Actor selection
+
+** Message
+** Recovery
+** Future & context
+** Misc
+- Ask pattern
