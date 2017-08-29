@@ -1,29 +1,27 @@
 * TODO Intro
 ** Avencall & Team
-** XiVO
-** Test 
-* TODO Scala
-** Cake Pattern
-- Principe
-- Benefits
-- Drawbacks
-  - Overuse (self-type)
-  - Misuse (mixin wrong traits because of)
-  - Limitation
-- Conclusion
-  - Prefer clear separation of concerns
-
-** Test Driven Development
-
+** XiVO Solution
+- Features
+- High level view of architecture
+- Open Source
 
 * TODO Akka
 ** Intro (Principles)
+- asynchronous for dummies
 ** Actor Hierarchy 
 ** Actor Reference
 ActorRef vs Actor selection
-
+Registry
 ** Message
 ** Recovery
+** Code metier ? Ou le mettre
+** Instanciating
+- Constructor
+- Cake Pattern
 ** Future & context
+** Testing
+- black box vs white box
 ** Misc
+- Leaking
 - Ask pattern
+** Read the doc
