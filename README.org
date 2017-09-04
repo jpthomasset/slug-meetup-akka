@@ -53,15 +53,14 @@ Akka is /the/ implementation of the Actor Model on the JVM.
 Multi-threading for dummies @@html:<div align="right"><i>Jean-Yves Lebleu</i></div>@@
 #+END_QUOTE
 
-* Akka @ Avencall
-#+BEGIN_QUOTE
-Akka is a toolkit for building highly concurrent, +distributed+, and resilient message-driven applications for +Java and+ Scala
+** Actors
+Actors can:
+#+ATTR_REVEAL: :frag (appear)
+- Receive messages
+- Do things
+- Send messages
 
-    -- http://akka.io/
-#+END_QUOTE
-** A +call+ tell B
-[[./img/a_tell_b.png]]
-
+#+ATTR_REVEAL: :frag appear
 #+BEGIN_SRC scala
 class HelloActor extends Actor {
   override def receive = {
@@ -70,7 +69,49 @@ class HelloActor extends Actor {
 }
 #+END_SRC
 
+** A +call+ tell B
+[[./img/a_tell_b.png]]
+
 Simple use cases are easy to implement but complexity kicks pretty soon.
+
+** A +call+ tell B (continued)
+#+BEGIN_SRC scala
+case class Hello(name: String)
+case class Greetings(message: String)
+
+class HelloActor(greetingsRef: ActorRef) {
+  override def preStart: Unit = {
+    greetingsRef ! Hello("Jean-Pierre")
+  }
+
+  override def receive = {
+    case Greetings(message) =>
+      println(s"$greetingsRef told $message")
+  }
+}
+
+class GreetingsActor extends Actor {
+  override def receive = {
+    case Hello(name) =>
+      // I can do something here...
+      sender ! Greetings(s"Hi $name!")
+}
+#+END_SRC
+
+** Actors message processing
+Akka guarantees for Actors:
+- Only one message processed at a time
+- No concurrency inside an actor
+- At-most-once delivery
+- Message ordering per *sender-receiver pair*
+
+
+* Akka @ Avencall
+#+BEGIN_QUOTE
+Akka is a toolkit for building highly concurrent, +distributed+, and resilient message-driven applications for +Java and+ Scala
+
+    -- http://akka.io/
+#+END_QUOTE
 
 ** Actor Hierarchy 
 One of our major problem was designing the Actor Hierarchy.
@@ -98,7 +139,7 @@ Designing will help you:
 #+ATTR_REVEAL: :frag appear
 Bonus: The actor model is easily mapped from a real world model.
 
-** Recovery
+** Supervision & Recovery
 Without any strategy, actors can die and respawn without notice...
 
 #+ATTR_REVEAL: :frag appear
@@ -166,4 +207,3 @@ Mix side-effect
 Alternatives : akka stream, monix, 
 State become
 FSM
-
