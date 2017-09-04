@@ -1,27 +1,169 @@
-* TODO Intro
-** Avencall & Team
-** XiVO Solution
-- Features
-- High level view of architecture
-- Open Source
+#+TITLE: Akka't the feeling
+#+OPTIONS: num:nil
+#+OPTIONS: toc:nil 
+#+OPTIONS: reveal_title_slide:nil
+#+OPTIONS: reveal_slide_number:nil
+#+REVEAL_HLEVEL: 1
+#+REVEAL_EXTRA_CSS: style.css
 
-* TODO Akka
-** Intro (Principles)
-- asynchronous for dummies
+* Akka't the feeling
+A humble feedback on Akka after some time in production
+
+* Who are we ?
+[[./img/logo_avencall.png]]
+- Open source software editor
+- 7 developers across two locations (Lyon / Prague)
+- Mostly junior in Scala
+
+** XiVO Solution
+[[./img/logo_xivo.png]]
+
+- Open Source IPBX based on Asterisk™ 
+- Phone Device Management
+- Call routing
+- Call Center Solution 
+- Computer telephony Integration
+
+** XiVO Architecture overview
+[[./img/xivo-overview.png]]
+
+** XUC Server
+- Real time message processing application
+- Using Akka
+- Expose API through Websocket & Rest.
+
+* Akka
+#+BEGIN_QUOTE
+Akka is a toolkit for building highly concurrent, distributed, and resilient message-driven applications for Java and Scala
+
+    -- http://akka.io/
+#+END_QUOTE
+
+** Akka Basics
+#+BEGIN_QUOTE
+Akka is /the/ implementation of the Actor Model on the JVM.
+- Simpler Concurrent & Distributed Systems
+- Resilient
+- High Performance
+- Elastic & Decentralized
+#+END_QUOTE
+
+#+ATTR_REVEAL: :frag appear
+#+BEGIN_QUOTE
+Multi-threading for dummies @@html:<div align="right"><i>Jean-Yves Lebleu</i></div>@@
+#+END_QUOTE
+
+* Akka @ Avencall
+#+BEGIN_QUOTE
+Akka is a toolkit for building highly concurrent, +distributed+, and resilient message-driven applications for +Java and+ Scala
+
+    -- http://akka.io/
+#+END_QUOTE
+** A +call+ tell B
+[[./img/a_tell_b.png]]
+
+#+BEGIN_SRC scala
+class HelloActor extends Actor {
+  override def receive = {
+    case "Hello" =>
+      sender ! "Hi !"
+}
+#+END_SRC
+
+Simple use cases are easy to implement but complexity kicks pretty soon.
+
 ** Actor Hierarchy 
+One of our major problem was designing the Actor Hierarchy.
+
+[[./img/no_hierarchy.png]]
+
+Or the lack of designing process...
+
+** Actor Hierarchy
+Is /the/ key to have a resilient and understandable system...
+
+- Actors dependency / discovery
+- Startup / Shutdown
+- Recovery
+- Message path
+
+** Actor Hierarchy - Designing
+[[./img/hierarchy.png]]
+
+Designing will help you:
+- Split concerns and avoid bloated actors
+- Define clear message path
+- Evaluate behaviour without implementation
+
+#+ATTR_REVEAL: :frag appear
+Bonus: The actor model is easily mapped from a real world model.
+
+** Recovery
+Without any strategy, actors can die and respawn without notice...
+
+#+ATTR_REVEAL: :frag appear
+For each actor, you need to define a clear strategy for:
+#+ATTR_REVEAL: :frag (appear)
+- Startup
+- Shutdown
+- Recovery
+- Failure of its children
+
+#+ATTR_REVEAL: :frag appear
+Again, designing a hierarchy of actors will help in this process.
+
+** Message
+#+ATTR_REVEAL: :frag (appear)
+- Messages need to be immutable: 
+  - To prevent side effects
+  - To avoid access exception
+- And serializable if system is distributed
+- Messages can be hard to track (to put it mildly)
+  - Define them close to where they're used.
+  - Design, design, design...
+
+#+ATTR_REVEAL: :frag appear
+Bonus: Scala offers =case class=, use them
+
+** Message Path & Routing
+Prefer waterfall for message vs ping pong
+Ask pattern or create temp action actor 
+Avoid complex routing or message over encapsulation
+
+** Actor consistency
+Do not try to be accurate, best effort is almost always enough.
+Consistency
+Un message c'est déjà le passé
+
 ** Actor Reference
 ActorRef vs Actor selection
 Registry
-** Message
-** Recovery
+
 ** Code metier ? Ou le mettre
 ** Instanciating
 - Constructor
 - Cake Pattern
+- Global object (Oh my !)
+- Discovery
+
 ** Future & context
 ** Testing
 - black box vs white box
 ** Misc
 - Leaking
 - Ask pattern
+- Code consistency - refactoring
+- Akka Cluster ?
 ** Read the doc
+** Conclusion
+- Architecture is key (white board)
+- Recommend ?
+
+** Notes
+Leaking
+
+Mix side-effect
+Alternatives : akka stream, monix, 
+State become
+FSM
+
