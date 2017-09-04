@@ -168,12 +168,13 @@ Bonus: Scala offers =case class=, use them
 Messages can be hard to track (to put it mildly)
 #+ATTR_REVEAL: :frag (appear)
 - Define them close to where they're used.
-- Avoid complex routing or message over encapsulation
+- Avoid complex routing or message over-encapsulation
 - Prefer event sourcing over query pattern
 - Design, design, design...
 
-** Actor consistency
+** TODO Actor consistency
 Do not try to be accurate, best effort is almost always enough.
+
 Consistency
 Un message c'est déjà le passé
 
