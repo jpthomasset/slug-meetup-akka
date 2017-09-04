@@ -4,6 +4,7 @@
 #+OPTIONS: reveal_title_slide:nil
 #+OPTIONS: reveal_slide_number:nil
 #+REVEAL_HLEVEL: 1
+#+REVEAL_THEME: solarized
 #+REVEAL_EXTRA_CSS: style.css
 
 * Akka't the feeling
@@ -34,23 +35,23 @@ A humble feedback on Akka after some time in production
 
 * Akka
 #+BEGIN_QUOTE
-Akka is a toolkit for building highly concurrent, distributed, and resilient message-driven applications for Java and Scala
+“Akka is a toolkit for building highly concurrent, distributed, and resilient message-driven applications for Java and Scala”
 
     -- http://akka.io/
 #+END_QUOTE
 
 ** Akka Basics
 #+BEGIN_QUOTE
-Akka is /the/ implementation of the Actor Model on the JVM.
+“Akka is /the/ implementation of the Actor Model on the JVM.
 - Simpler Concurrent & Distributed Systems
 - Resilient
 - High Performance
-- Elastic & Decentralized
+- Elastic & Decentralized”
 #+END_QUOTE
 
 #+ATTR_REVEAL: :frag appear
 #+BEGIN_QUOTE
-Multi-threading for dummies @@html:<div align="right"><i>Jean-Yves Lebleu</i></div>@@
+“Multi-threading for dummies” @@html:<div align="right"><i>Jean-Yves Lebleu</i></div>@@
 #+END_QUOTE
 
 ** Actors
@@ -159,51 +160,129 @@ Again, designing a hierarchy of actors will help in this process.
   - To prevent side effects
   - To avoid access exception
 - And serializable if system is distributed
-- Messages can be hard to track (to put it mildly)
-  - Define them close to where they're used.
-  - Design, design, design...
 
 #+ATTR_REVEAL: :frag appear
 Bonus: Scala offers =case class=, use them
 
 ** Message Path & Routing
-Prefer waterfall for message vs ping pong
-Ask pattern or create temp action actor 
-Avoid complex routing or message over encapsulation
+Messages can be hard to track (to put it mildly)
+#+ATTR_REVEAL: :frag (appear)
+- Define them close to where they're used.
+- Avoid complex routing or message over encapsulation
+- Prefer event sourcing over query pattern
+- Design, design, design...
 
 ** Actor consistency
 Do not try to be accurate, best effort is almost always enough.
 Consistency
 Un message c'est déjà le passé
 
-** Actor Reference
-ActorRef vs Actor selection
-Registry
+** Actor Reference 1/4
+In a non-trivial architecture, you will need your actors to collaborate.
 
-** Code metier ? Ou le mettre
-** Instanciating
-- Constructor
-- Cake Pattern
-- Global object (Oh my !)
-- Discovery
+They will need to know each other (somehow).
 
-** Future & context
-** Testing
-- black box vs white box
-** Misc
+** Actor Reference 2/4
+Possible strategies:
+#+ATTR_REVEAL: :frag (appear)
+- Inject ActorRef in Actor constructor
+- Let the Actors introduce themselves
+
+#+ATTR_REVEAL: :frag appear
+#+BEGIN_SRC scala
+case class IntroduceMe(someFriend: ActorRef, message: String)
+
+class FriendlyActor(friend: ActorRef) extends Actor {
+  override def preStart: Unit = {
+    friend ! IntroduceMe(self, "Hi there !")
+  }
+  // ...
+}
+#+END_SRC
+
+** Actor Reference 3/4
+Alternate strategies:
+#+ATTR_REVEAL: :frag (appear)
+- Use ActorSelection
+- Use a Registry
+
+** Actor Reference 4/4
+Avoid:
+#+ATTR_REVEAL: :frag (appear)
+- Injecting using Cake Pattern
+- Using a global object containing references (Oh...My...!)
+
+** Mutable properties
+Actors can mutate properties safely because when processing a message there is no concurrency.
+
+However, you must make sure you are in the same context !
+
+** Future & context - The bad way
+Inside a Future, you are no longer inside the Akka message processing context.
+
+#+ATTR_REVEAL: :frag appear
+#+BEGIN_SRC scala
+
+object Doer {
+  def doSomething(message: String): Future[String] = //...
+}
+
+class BadActor(friend: ActorRef) extends Actor {
+  var lastMessage = ""
+    
+  override def receive = {
+    case DoIt(message) =>
+      // Oh No !!!
+      Doer.doSomething(message).map(lastMessage = _)
+  }
+}
+#+END_SRC
+
+** Future & context - The good way
+Avoid closure and use message to update Actor properties.
+
+#+BEGIN_SRC scala
+object Doer {
+  def doSomething(message: String): Future[String] = //...
+}
+
+class GoodActor(friend: ActorRef) extends Actor {
+  var lastMessage = ""
+    
+  override def receive = {
+    case DoIt(message) =>
+      Doer.doSomething(message).map(Message(_)).pipeTo(self)
+
+    case Message(message) => lastMessage = message
+    
+    case akka.actor.Status.Failure(cause) => // Oops !
+  }
+}
+#+END_SRC
+
+
+** TODO EventBus 
+- MemoryHog
+- No death watch by default
+
+** TODO Testing - Black or White
+[[./img/testing.png]]
+
+
+** TODO Misc
 - Leaking
-- Ask pattern
-- Code consistency - refactoring
+- Ask pattern or create temp action actor 
+- Mixing side-effect (injecting mutable object in an Actor)
+- Code consistency can be hard to maintain when evaluating patterns
+- Refactoring can be difficult
+- Monitoring
+- FSM
+- State become
 - Akka Cluster ?
-** Read the doc
+
 ** Conclusion
-- Architecture is key (white board)
-- Recommend ?
 
-** Notes
-Leaking
+- And yet it works, despite all our mistakes...
+- Architecture is key
+- You should read the doc ! http://doc.akka.io
 
-Mix side-effect
-Alternatives : akka stream, monix, 
-State become
-FSM
