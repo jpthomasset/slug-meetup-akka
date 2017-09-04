@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Akka't the feeling</title>
+<meta name="author" content="(Jean-Pierre Thomasset)"/>
+<style type="text/css">
+.underline { text-decoration: underline; }
+</style>
+<link rel="stylesheet" href="./reveal.js/css/reveal.css"/>
+
+<link rel="stylesheet" href="./reveal.js/css/theme/moon.css" id="theme"/>
+
+<link rel="stylesheet" href="style.css"/>
+
+<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+<script>
+    if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = './reveal.js/css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+    }
+</script>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+<section>
+<section id="slide-org86b3e66">
+<h2 id="org86b3e66">Akka't the feeling</h2>
+<p>
+A humble feedback on Akka after some time in production
+</p>
+
+</section>
+</section>
+<section>
+<section id="slide-orgf35c35f">
+<h2 id="orgf35c35f">Who are we ?</h2>
+
+<div class="figure">
+<p><img src="./img/logo_avencall.png" alt="logo_avencall.png" />
+</p>
+</div>
+<ul>
+<li>Open source software editor</li>
+<li>7 developers across two locations (Lyon / Prague)</li>
+<li>Mostly junior in Scala</li>
+
+</ul>
+
+</section>
+<section id="slide-org7e9a7c9">
+<h3 id="org7e9a7c9">XiVO Solution</h3>
+
+<div class="figure">
+<p><img src="./img/logo_xivo.png" alt="logo_xivo.png" />
+</p>
+</div>
+
+<ul>
+<li>Open Source IPBX based on Asterisk™</li>
+<li>Phone Device Management</li>
+<li>Call routing</li>
+<li>Call Center Solution</li>
+<li>Computer telephony Integration</li>
+
+</ul>
+
+</section>
+<section id="slide-org4e9b979">
+<h3 id="org4e9b979">XiVO Architecture overview</h3>
+
+<div class="figure">
+<p><img src="./img/xivo-overview.png" alt="xivo-overview.png" />
+</p>
+</div>
+
+</section>
+<section id="slide-org74a9c0b">
+<h3 id="org74a9c0b">XUC Server</h3>
+<ul>
+<li>Real time message processing application</li>
+<li>Using Akka</li>
+<li>Expose API through Websocket &amp; Rest.</li>
+
+</ul>
+
+</section>
+</section>
+<section>
+<section id="slide-orgefead1e">
+<h2 id="orgefead1e">Akka</h2>
+<blockquote nil>
+<p>
+Akka is a toolkit for building highly concurrent, distributed, and resilient message-driven applications for Java and Scala
+</p>
+
+<p>
+&#x2013; <a href="http://akka.io/">http://akka.io/</a>
+</p>
+</blockquote>
+
+</section>
+<section id="slide-orgd7d89a1">
+<h3 id="orgd7d89a1">Akka Basics</h3>
+<blockquote nil>
+<p>
+Akka is <i>the</i> implementation of the Actor Model on the JVM.
+</p>
+<ul>
+<li>Simpler Concurrent &amp; Distributed Systems</li>
+<li>Resilient</li>
+<li>High Performance</li>
+<li>Elastic &amp; Decentralized</li>
+
+</ul>
+</blockquote>
+
+<blockquote  class="fragment appear">
+<p>
+Multi-threading for dummies <div align="right"><i>Jean-Yves Lebleu</i></div>
+</p>
+</blockquote>
+
+</section>
+<section id="slide-org6552fcd">
+<h3 id="org6552fcd">Actors</h3>
+<p>
+Actors can:
+</p>
+<ul>
+<li class="fragment appear">Receive messages</li>
+<li class="fragment appear">Do things</li>
+<li class="fragment appear">Send messages</li>
+
+</ul>
+
+<div class="org-src-container">
+
+<pre  class="fragment appear"><span style="color: #F92672;">class</span> <span style="color: #66D9EF;">HelloActor</span> <span style="color: #F92672;">extends</span> <span style="color: #66D9EF;">Actor</span> {
+  <span style="color: #F92672;">override</span> <span style="color: #F92672;">def</span> <span style="color: #A6E22E;">receive</span> <span style="color: #F92672;">=</span> {
+    <span style="color: #F92672;">case</span> <span style="color: #E6DB74;">"Hello"</span> <span style="color: #F92672;">=&gt;</span>
+      sender ! <span style="color: #E6DB74;">"Hi !"</span>
+}
+</pre>
+</div>
+
+</section>
+<section id="slide-orge60ae0f">
+<h3 id="orge60ae0f">A <del>call</del> tell B</h3>
+
+<div class="figure">
+<p><img src="./img/a_tell_b.png" alt="a_tell_b.png" />
+</p>
+</div>
+
+<p>
+Simple use cases are easy to implement but complexity kicks pretty soon.
+</p>
+
+</section>
+<section id="slide-orgf405842">
+<h3 id="orgf405842">A <del>call</del> tell B (continued)</h3>
+<div class="org-src-container">
+
+<pre  class="src src-scala"><span style="color: #F92672;">case</span> <span style="color: #F92672;">class</span> <span style="color: #66D9EF;">Hello</span>(name<span style="color: #F92672;">:</span> <span style="color: #66D9EF;">String</span>)
+<span style="color: #F92672;">case</span> <span style="color: #F92672;">class</span> <span style="color: #66D9EF;">Greetings</span>(message<span style="color: #F92672;">:</span> <span style="color: #66D9EF;">String</span>)
+
+<span style="color: #F92672;">class</span> <span style="color: #66D9EF;">HelloActor</span>(greetingsRef<span style="color: #F92672;">:</span> <span style="color: #66D9EF;">ActorRef</span>) {
+  <span style="color: #F92672;">override</span> <span style="color: #F92672;">def</span> <span style="color: #A6E22E;">preStart</span><span style="color: #F92672;">:</span> <span style="color: #66D9EF;">Unit</span> <span style="color: #F92672;">=</span> {
+    greetingsRef ! <span style="color: #AE81FF;">Hello</span>(<span style="color: #E6DB74;">"Jean-Pierre"</span>)
+  }
+
+  <span style="color: #F92672;">override</span> <span style="color: #F92672;">def</span> <span style="color: #A6E22E;">receive</span> <span style="color: #F92672;">=</span> {
+    <span style="color: #F92672;">case</span> <span style="color: #66D9EF;">Greetings</span>(<span style="color: #FD971F;">message</span>) <span style="color: #F92672;">=&gt;</span>
+      println(s<span style="color: #E6DB74;">"</span><span style="color: #FD971F;">$greetingsRef</span><span style="color: #E6DB74;"> told </span><span style="color: #FD971F;">$message</span><span style="color: #E6DB74;">"</span>)
+  }
+}
+
+<span style="color: #F92672;">class</span> <span style="color: #66D9EF;">GreetingsActor</span> <span style="color: #F92672;">extends</span> <span style="color: #66D9EF;">Actor</span> {
+  <span style="color: #F92672;">override</span> <span style="color: #F92672;">def</span> <span style="color: #A6E22E;">receive</span> <span style="color: #F92672;">=</span> {
+    <span style="color: #F92672;">case</span> <span style="color: #66D9EF;">Hello</span>(<span style="color: #FD971F;">name</span>) <span style="color: #F92672;">=&gt;</span>
+      <span style="color: #75715E;">// </span><span style="color: #75715E;">I can do something here...</span>
+      sender ! <span style="color: #AE81FF;">Greetings</span>(s<span style="color: #E6DB74;">"Hi </span><span style="color: #FD971F;">$name</span><span style="color: #E6DB74;">!"</span>)
+}
+</pre>
+</div>
+
+</section>
+<section id="slide-orgb11fad9">
+<h3 id="orgb11fad9">Actors message processing</h3>
+<p>
+Akka guarantees for Actors:
+</p>
+<ul>
+<li>Only one message processed at a time</li>
+<li>No concurrency inside an actor</li>
+<li>At-most-once delivery</li>
+<li>Message ordering per <b>sender-receiver pair</b></li>
+
+</ul>
+
+
+</section>
+</section>
+<section>
+<section id="slide-org820ba17">
+<h2 id="org820ba17">Akka @ Avencall</h2>
+<blockquote nil>
+<p>
+Akka is a toolkit for building highly concurrent, <del>distributed</del>, and resilient message-driven applications for <del>Java and</del> Scala
+</p>
+
+<p>
+&#x2013; <a href="http://akka.io/">http://akka.io/</a>
+</p>
+</blockquote>
+
+</section>
+<section id="slide-org0b567d0">
+<h3 id="org0b567d0">Actor Hierarchy</h3>
+<p>
+One of our major problem was designing the Actor Hierarchy.
+</p>
+
+
+<div class="figure">
+<p><img src="./img/no_hierarchy.png" alt="no_hierarchy.png" />
+</p>
+</div>
+
+<p>
+Or the lack of designing process&#x2026;
+</p>
+
+</section>
+<section id="slide-org3faf55c">
+<h3 id="org3faf55c">Actor Hierarchy</h3>
+<p>
+Is <i>the</i> key to have a resilient and understandable system&#x2026;
+</p>
+
+<ul>
+<li>Actors dependency / discovery</li>
+<li>Startup / Shutdown</li>
+<li>Recovery</li>
+<li>Message path</li>
+
+</ul>
+
+</section>
+<section id="slide-org1dbb2dc">
+<h3 id="org1dbb2dc">Actor Hierarchy - Designing</h3>
+
+<div class="figure">
+<p><img src="./img/hierarchy.png" alt="hierarchy.png" />
+</p>
+</div>
+
+<p>
+Designing will help you:
+</p>
+<ul>
+<li>Split concerns and avoid bloated actors</li>
+<li>Define clear message path</li>
+<li>Evaluate behaviour without implementation</li>
+
+</ul>
+
+<p class="fragment appear">
+Bonus: The actor model is easily mapped from a real world model.
+</p>
+
+</section>
+<section id="slide-org4068cfe">
+<h3 id="org4068cfe">Supervision &amp; Recovery</h3>
+<p>
+Without any strategy, actors can die and respawn without notice&#x2026;
+</p>
+
+<p class="fragment appear">
+For each actor, you need to define a clear strategy for:
+</p>
+<ul>
+<li class="fragment appear">Startup</li>
+<li class="fragment appear">Shutdown</li>
+<li class="fragment appear">Recovery</li>
+<li class="fragment appear">Failure of its children</li>
+
+</ul>
+
+<p class="fragment appear">
+Again, designing a hierarchy of actors will help in this process.
+</p>
+
+</section>
+<section id="slide-org982284d">
+<h3 id="org982284d">Message</h3>
+<ul>
+<li class="fragment appear">Messages need to be immutable: 
+<ul>
+<li>To prevent side effects</li>
+<li>To avoid access exception</li>
+
+</ul></li>
+<li class="fragment appear">And serializable if system is distributed</li>
+<li class="fragment appear">Messages can be hard to track (to put it mildly)
+<ul>
+<li>Define them close to where they're used.</li>
+<li>Design, design, design&#x2026;</li>
+
+</ul></li>
+
+</ul>
+
+<p class="fragment appear">
+Bonus: Scala offers <code>case class</code>, use them
+</p>
+
+</section>
+<section id="slide-org988639d">
+<h3 id="org988639d">Message Path &amp; Routing</h3>
+<p>
+Prefer waterfall for message vs ping pong
+Ask pattern or create temp action actor 
+Avoid complex routing or message over encapsulation
+</p>
+
+</section>
+<section id="slide-orgf475575">
+<h3 id="orgf475575">Actor consistency</h3>
+<p>
+Do not try to be accurate, best effort is almost always enough.
+Consistency
+Un message c'est déjà le passé
+</p>
+
+</section>
+<section id="slide-orgb0c01aa">
+<h3 id="orgb0c01aa">Actor Reference</h3>
+<p>
+ActorRef vs Actor selection
+Registry
+</p>
+
+</section>
+<section id="slide-org281b25b">
+<h3 id="org281b25b">Code metier ? Ou le mettre</h3>
+</section>
+<section id="slide-orgb6347b9">
+<h3 id="orgb6347b9">Instanciating</h3>
+<ul>
+<li>Constructor</li>
+<li>Cake Pattern</li>
+<li>Global object (Oh my !)</li>
+<li>Discovery</li>
+
+</ul>
+
+</section>
+<section id="slide-orgb4f4865">
+<h3 id="orgb4f4865">Future &amp; context</h3>
+</section>
+<section id="slide-org3e88095">
+<h3 id="org3e88095">Testing</h3>
+<ul>
+<li>black box vs white box</li>
+
+</ul>
+</section>
+<section id="slide-org7a8e882">
+<h3 id="org7a8e882">Misc</h3>
+<ul>
+<li>Leaking</li>
+<li>Ask pattern</li>
+<li>Code consistency - refactoring</li>
+<li>Akka Cluster ?</li>
+
+</ul>
+</section>
+<section id="slide-orgb120ef5">
+<h3 id="orgb120ef5">Read the doc</h3>
+</section>
+<section id="slide-orgeb57423">
+<h3 id="orgeb57423">Conclusion</h3>
+<ul>
+<li>Architecture is key (white board)</li>
+<li>Recommend ?</li>
+
+</ul>
+
+</section>
+<section id="slide-org593e497">
+<h3 id="org593e497">Notes</h3>
+<p>
+Leaking
+</p>
+
+<p>
+Mix side-effect
+Alternatives : akka stream, monix, 
+State become
+FSM
+</p>
+</section>
+</section>
+</div>
+</div>
+<script src="./reveal.js/lib/js/head.min.js"></script>
+<script src="./reveal.js/js/reveal.js"></script>
+
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+
+controls: true,
+progress: true,
+history: false,
+center: true,
+slideNumber: false,
+rollingLinks: false,
+keyboard: true,
+overview: true,
+
+theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+transitionSpeed: 'default',
+multiplex: {
+    secret: '', // null if client
+    id: '', // id, obtained from socket.io server
+    url: '' // Location of socket.io server
+},
+
+// Optional libraries used to extend on reveal.js
+dependencies: [
+ { src: './reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+ { src: './reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+ { src: './reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+ { src: './reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+ { src: './reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }]
+});
+</script>
+</body>
+</html>
