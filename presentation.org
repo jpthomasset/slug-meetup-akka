@@ -114,7 +114,7 @@ Akka is a toolkit for building highly concurrent, +distributed+, and resilient m
     -- http://akka.io/
 #+END_QUOTE
 
-** Actor Hierarchy 
+* Actor Hierarchy 
 One of our major problem was designing the Actor Hierarchy.
 
 [[./img/no_hierarchy.png]]
@@ -154,29 +154,7 @@ For each actor, you need to define a clear strategy for:
 #+ATTR_REVEAL: :frag appear
 Again, designing a hierarchy of actors will help in this process.
 
-** Message
-#+ATTR_REVEAL: :frag (appear)
-- Messages need to be immutable: 
-  - To prevent side effects
-  - To avoid access exception
-- And serializable if system is distributed
-
-#+ATTR_REVEAL: :frag appear
-Bonus: Scala offers =case class=, use them
-
-** Message Path & Routing
-Messages can be hard to track (to put it mildly)
-#+ATTR_REVEAL: :frag (appear)
-- Define them close to where they're used.
-- Avoid complex routing or message over-encapsulation
-- Prefer event sourcing over query pattern
-- Design, design, design...
-
-** TODO Actor consistency
-Do not try to be accurate, best effort is almost always enough.
-
-Consistency
-Un message c'est déjà le passé
+* Actor Reference
 
 ** Actor Reference 1/4
 In a non-trivial architecture, you will need your actors to collaborate.
@@ -213,12 +191,35 @@ Avoid:
 - Injecting using Cake Pattern
 - Using a global object containing references (Oh...My...!)
 
+* Message
+#+ATTR_REVEAL: :frag (appear)
+- Messages need to be immutable: 
+  - To prevent side effects
+  - To avoid access exception
+- And serializable if system is distributed
+
+#+ATTR_REVEAL: :frag appear
+Bonus: Scala offers =case class=, use them
+
+** Message Path & Routing
+Messages can be hard to track (to put it mildly)
+#+ATTR_REVEAL: :frag (appear)
+- Define them close to where they're used.
+- Avoid complex routing or message over-encapsulation
+- Prefer event sourcing over query pattern
+- Design, design, design...
+
+** Message & Actor consistency
+Do not try to be accurate, best effort is almost always enough. It will be consistent eventually
+
+* Future
+
 ** Mutable properties
 Actors can mutate properties safely because when processing a message there is no concurrency.
 
 However, you must make sure you are in the same context !
 
-** Future & context - The bad way
+** Future & context
 Inside a Future, you are no longer inside the Akka message processing context.
 
 #+ATTR_REVEAL: :frag appear
@@ -261,29 +262,61 @@ class GoodActor(friend: ActorRef) extends Actor {
 }
 #+END_SRC
 
+* Misc
 
-** TODO EventBus 
-- MemoryHog
-- No death watch by default
+** EventBus 
+Akka offers a generic event bus mechanism with a customizable classification.
 
-** TODO Testing - Black or White
+Pretty cool but...
+
+#+ATTR_REVEAL: :frag (appear)
+- Memory hog when using multiple level of classification
+- No death watch by default could lead to memory leak
+
+** Testing - Black or White
 [[./img/testing.png]]
 
+- Black box: Send input, assert on output
+- White box: Send input, assert on inner workings
 
-** TODO Misc
-- Leaking
-- Ask pattern or create temp action actor 
-- Mixing side-effect (injecting mutable object in an Actor)
+** Refactoring
+Refactoring can be difficult but some tips can help:
+
+- Split concerns
+- Clear message paths
+- Lot of test
+- Be explicit in tests (wording & coding)
+
+
+** Ask Pattern, Queries, Command
+- The ask pattern is convenient but returns a future so be cautious.
+- When used, this pattern creates a temporary actor to handle your query.
+- Is there another way ?
+#+ATTR_REVEAL: :frag (appear)
+  - If you use the pattern all over, you may need to change the design
+  - Create a custom actor to handle this query
+
+** Actor state
+
+Akka offers convenient ways to handle state inside an actor:
+#+ATTR_REVEAL: :frag (appear)
+- context.become(whatYouAre): easy to use
+- FSM: For advanced usage
+
+** Coding with style...
+
+#+ATTR_REVEAL: :frag (appear)
 - Code consistency can be hard to maintain when evaluating patterns
-- Refactoring can be difficult
-- Monitoring
-- FSM
-- State become
+- Mixing side-effect (injecting mutable object in an Actor)
+- Monitoring will help
 - Akka Cluster ?
 
-** Conclusion
+* Conclusion
 
 - And yet it works, despite all our mistakes...
-- Architecture is key
+- Designing you system is key
 - You should read the doc ! http://doc.akka.io
+
+** Thank you
+Question ?
 
