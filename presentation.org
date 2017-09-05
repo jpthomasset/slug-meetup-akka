@@ -320,3 +320,5 @@ Akka offers convenient ways to handle state inside an actor:
 ** Thank you
 Question ?
 
+https://jpthomasset.github.io/slug-meetup-akka/
+
