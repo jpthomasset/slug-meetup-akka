@@ -209,9 +209,6 @@ Messages can be hard to track (to put it mildly)
 - Prefer event sourcing over query pattern
 - Design, design, design...
 
-** Message & Actor consistency
-Do not try to be accurate, best effort is almost always enough. It will be consistent eventually
-
 * Future
 
 ** Mutable properties
@@ -291,8 +288,8 @@ Refactoring can be difficult but some tips can help:
 ** Ask Pattern, Queries, Command
 - The ask pattern is convenient but returns a future so be cautious.
 - When used, this pattern creates a temporary actor to handle your query.
+#+ATTR_REVEAL: :frag appear
 - Is there another way ?
-#+ATTR_REVEAL: :frag (appear)
   - If you use the pattern all over, you may need to change the design
   - Create a custom actor to handle this query
 
