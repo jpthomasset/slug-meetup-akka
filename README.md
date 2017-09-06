@@ -1,4 +1,4 @@
-# Akka't the blues
+# Akka't the feeling
 
 A humble feedback on Akka after some time in production.
 
