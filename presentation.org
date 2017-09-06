@@ -39,7 +39,9 @@ A humble feedback on Akka after some time in production
 
     -- http://akka.io/
 #+END_QUOTE
-
+#+BEGIN_NOTES
+- Ask attendees their knowledge level
+#+END_NOTES
 ** Akka Basics
 #+BEGIN_QUOTE
 “Akka is /the/ implementation of the Actor Model on the JVM.
@@ -58,7 +60,7 @@ A humble feedback on Akka after some time in production
 Actors can:
 #+ATTR_REVEAL: :frag (appear)
 - Receive messages
-- Do things
+- Do things while processing messages
 - Send messages
 
 #+ATTR_REVEAL: :frag appear
@@ -106,6 +108,13 @@ Akka guarantees for Actors:
 - At-most-once delivery
 - Message ordering per *sender-receiver pair*
 
+** Actors Lifecycle
+
+[[./img/actor_lifecycle.png]]
+
+** Actors Hierarchy
+
+[[./img/akka_hierarchy.png]]
 
 * Akka @ Avencall
 #+BEGIN_QUOTE
@@ -141,7 +150,7 @@ Designing will help you:
 Bonus: The actor model is easily mapped from a real world model.
 
 ** Supervision & Recovery
-Without any strategy, actors can die and respawn without notice...
+Actors can die and respawn without notice... So you need a strategy !
 
 #+ATTR_REVEAL: :frag appear
 For each actor, you need to define a clear strategy for:
@@ -154,14 +163,12 @@ For each actor, you need to define a clear strategy for:
 #+ATTR_REVEAL: :frag appear
 Again, designing a hierarchy of actors will help in this process.
 
-* Actor Reference
-
-** Actor Reference 1/4
+* Actor Collaboration
 In a non-trivial architecture, you will need your actors to collaborate.
 
 They will need to know each other (somehow).
 
-** Actor Reference 2/4
+** Getting Actor Reference 
 Possible strategies:
 #+ATTR_REVEAL: :frag (appear)
 - Inject ActorRef in Actor constructor
@@ -179,13 +186,13 @@ class FriendlyActor(friend: ActorRef) extends Actor {
 }
 #+END_SRC
 
-** Actor Reference 3/4
-Alternate strategies:
+** Alternate strategies
+
 #+ATTR_REVEAL: :frag (appear)
 - Use ActorSelection
 - Use a Registry
 
-** Actor Reference 4/4
+** Strategies to avoid
 Avoid:
 #+ATTR_REVEAL: :frag (appear)
 - Injecting using Cake Pattern
@@ -207,6 +214,7 @@ Messages can be hard to track (to put it mildly)
 - Define them close to where they're used.
 - Avoid complex routing or message over-encapsulation
 - Prefer event sourcing over query pattern
+- Akka Typed ?
 - Design, design, design...
 
 * Future
@@ -246,7 +254,8 @@ object Doer {
 }
 
 class GoodActor(friend: ActorRef) extends Actor {
-  var lastMessage = ""
+  // We should use context.become with state here
+  var lastMessage = "" 
     
   override def receive = {
     case DoIt(message) =>
@@ -306,7 +315,6 @@ Akka offers convenient ways to handle state inside an actor:
 - Code consistency can be hard to maintain when evaluating patterns
 - Mixing side-effect (injecting mutable object in an Actor)
 - Monitoring will help
-- Akka Cluster ?
 
 * Conclusion
 
