@@ -29,8 +29,8 @@
 <div class="slides">
 
 <section>
-<section id="slide-org9d4aff3">
-<h2 id="org9d4aff3">Akka't the feeling</h2>
+<section id="slide-org301c1ea">
+<h2 id="org301c1ea">Akka't the feeling</h2>
 <p>
 A humble feedback on Akka after some time in production
 </p>
@@ -38,8 +38,8 @@ A humble feedback on Akka after some time in production
 </section>
 </section>
 <section>
-<section id="slide-org3da8edd">
-<h2 id="org3da8edd">Who are we ?</h2>
+<section id="slide-org3ef9bb3">
+<h2 id="org3ef9bb3">Who are we ?</h2>
 
 <div class="figure">
 <p><img src="./img/logo_avencall.png" alt="logo_avencall.png" />
@@ -53,8 +53,8 @@ A humble feedback on Akka after some time in production
 </ul>
 
 </section>
-<section id="slide-org2ad5519">
-<h3 id="org2ad5519">XiVO Solution</h3>
+<section id="slide-orgc98cfaa">
+<h3 id="orgc98cfaa">XiVO Solution</h3>
 
 <div class="figure">
 <p><img src="./img/logo_xivo.png" alt="logo_xivo.png" />
@@ -71,8 +71,8 @@ A humble feedback on Akka after some time in production
 </ul>
 
 </section>
-<section id="slide-orgbd08d54">
-<h3 id="orgbd08d54">XiVO Architecture overview</h3>
+<section id="slide-org9c771c2">
+<h3 id="org9c771c2">XiVO Architecture overview</h3>
 
 <div class="figure">
 <p><img src="./img/xivo-overview.png" alt="xivo-overview.png" />
@@ -80,8 +80,8 @@ A humble feedback on Akka after some time in production
 </div>
 
 </section>
-<section id="slide-org8096657">
-<h3 id="org8096657">XUC Server</h3>
+<section id="slide-org8b8c7cf">
+<h3 id="org8b8c7cf">XUC Server</h3>
 <ul>
 <li>Real time message processing application</li>
 <li>Using Akka</li>
@@ -92,8 +92,8 @@ A humble feedback on Akka after some time in production
 </section>
 </section>
 <section>
-<section id="slide-org3cfec95">
-<h2 id="org3cfec95">Akka</h2>
+<section id="slide-org32880d7">
+<h2 id="org32880d7">Akka</h2>
 <blockquote nil>
 <p>
 “Akka is a toolkit for building highly concurrent, distributed, and resilient message-driven applications for Java and Scala”
@@ -105,8 +105,8 @@ A humble feedback on Akka after some time in production
 </blockquote>
 
 </section>
-<section id="slide-org795b090">
-<h3 id="org795b090">Akka Basics</h3>
+<section id="slide-org624ba65">
+<h3 id="org624ba65">Akka Basics</h3>
 <blockquote nil>
 <p>
 “Akka is <i>the</i> implementation of the Actor Model on the JVM.
@@ -127,8 +127,8 @@ A humble feedback on Akka after some time in production
 </blockquote>
 
 </section>
-<section id="slide-org2876c85">
-<h3 id="org2876c85">Actors</h3>
+<section id="slide-org1949618">
+<h3 id="org1949618">Actors</h3>
 <p>
 Actors can:
 </p>
@@ -150,8 +150,8 @@ Actors can:
 </div>
 
 </section>
-<section id="slide-orga72a5bb">
-<h3 id="orga72a5bb">A <del>call</del> tell B</h3>
+<section id="slide-org0d9c19f">
+<h3 id="org0d9c19f">A <del>call</del> tell B</h3>
 
 <div class="figure">
 <p><img src="./img/a_tell_b.png" alt="a_tell_b.png" />
@@ -163,8 +163,8 @@ Simple use cases are easy to implement but complexity kicks pretty soon.
 </p>
 
 </section>
-<section id="slide-org73735f4">
-<h3 id="org73735f4">A <del>call</del> tell B (continued)</h3>
+<section id="slide-org53bd357">
+<h3 id="org53bd357">A <del>call</del> tell B (continued)</h3>
 <div class="org-src-container">
 
 <pre  class="src src-scala"><span style="color: #F92672;">case</span> <span style="color: #F92672;">class</span> <span style="color: #66D9EF;">Hello</span>(name<span style="color: #F92672;">:</span> <span style="color: #66D9EF;">String</span>)
@@ -191,8 +191,8 @@ Simple use cases are easy to implement but complexity kicks pretty soon.
 </div>
 
 </section>
-<section id="slide-org17daf68">
-<h3 id="org17daf68">Actors message processing</h3>
+<section id="slide-orgdabab61">
+<h3 id="orgdabab61">Actors message processing</h3>
 <p>
 Akka guarantees for Actors:
 </p>
@@ -208,8 +208,8 @@ Akka guarantees for Actors:
 </section>
 </section>
 <section>
-<section id="slide-org3515b97">
-<h2 id="org3515b97">Akka @ Avencall</h2>
+<section id="slide-org597c409">
+<h2 id="org597c409">Akka @ Avencall</h2>
 <blockquote nil>
 <p>
 Akka is a toolkit for building highly concurrent, <del>distributed</del>, and resilient message-driven applications for <del>Java and</del> Scala
@@ -223,8 +223,8 @@ Akka is a toolkit for building highly concurrent, <del>distributed</del>, and re
 </section>
 </section>
 <section>
-<section id="slide-org57733e2">
-<h2 id="org57733e2">Actor Hierarchy</h2>
+<section id="slide-orgf6e4a45">
+<h2 id="orgf6e4a45">Actor Hierarchy</h2>
 <p>
 One of our major problem was designing the Actor Hierarchy.
 </p>
@@ -240,8 +240,8 @@ Or the lack of designing process&#x2026;
 </p>
 
 </section>
-<section id="slide-orga132385">
-<h3 id="orga132385">Actor Hierarchy</h3>
+<section id="slide-orgdf8dc43">
+<h3 id="orgdf8dc43">Actor Hierarchy</h3>
 <p>
 Is <i>the</i> key to have a resilient and understandable system&#x2026;
 </p>
@@ -255,8 +255,8 @@ Is <i>the</i> key to have a resilient and understandable system&#x2026;
 </ul>
 
 </section>
-<section id="slide-org4b2048e">
-<h3 id="org4b2048e">Actor Hierarchy - Designing</h3>
+<section id="slide-orgac80fa6">
+<h3 id="orgac80fa6">Actor Hierarchy - Designing</h3>
 
 <div class="figure">
 <p><img src="./img/hierarchy.png" alt="hierarchy.png" />
@@ -278,8 +278,8 @@ Bonus: The actor model is easily mapped from a real world model.
 </p>
 
 </section>
-<section id="slide-org26b5be6">
-<h3 id="org26b5be6">Supervision &amp; Recovery</h3>
+<section id="slide-orgab917a4">
+<h3 id="orgab917a4">Supervision &amp; Recovery</h3>
 <p>
 Without any strategy, actors can die and respawn without notice&#x2026;
 </p>
@@ -302,12 +302,12 @@ Again, designing a hierarchy of actors will help in this process.
 </section>
 </section>
 <section>
-<section id="slide-org62db303">
-<h2 id="org62db303">Actor Reference</h2>
-<div class="outline-text-2" id="text-org62db303">
+<section id="slide-org8bbf3d7">
+<h2 id="org8bbf3d7">Actor Reference</h2>
+<div class="outline-text-2" id="text-org8bbf3d7">
 </div></section>
-<section id="slide-org6ea83fc">
-<h3 id="org6ea83fc">Actor Reference 1/4</h3>
+<section id="slide-org97d1cea">
+<h3 id="org97d1cea">Actor Reference 1/4</h3>
 <p>
 In a non-trivial architecture, you will need your actors to collaborate.
 </p>
@@ -317,8 +317,8 @@ They will need to know each other (somehow).
 </p>
 
 </section>
-<section id="slide-orga0addc5">
-<h3 id="orga0addc5">Actor Reference 2/4</h3>
+<section id="slide-org6a31d8d">
+<h3 id="org6a31d8d">Actor Reference 2/4</h3>
 <p>
 Possible strategies:
 </p>
@@ -342,8 +342,8 @@ Possible strategies:
 </div>
 
 </section>
-<section id="slide-orgfdbabbc">
-<h3 id="orgfdbabbc">Actor Reference 3/4</h3>
+<section id="slide-org1fe5d3e">
+<h3 id="org1fe5d3e">Actor Reference 3/4</h3>
 <p>
 Alternate strategies:
 </p>
@@ -354,8 +354,8 @@ Alternate strategies:
 </ul>
 
 </section>
-<section id="slide-orgddd843d">
-<h3 id="orgddd843d">Actor Reference 4/4</h3>
+<section id="slide-orgb262ac7">
+<h3 id="orgb262ac7">Actor Reference 4/4</h3>
 <p>
 Avoid:
 </p>
@@ -368,8 +368,8 @@ Avoid:
 </section>
 </section>
 <section>
-<section id="slide-org14e41ba">
-<h2 id="org14e41ba">Message</h2>
+<section id="slide-org84ea597">
+<h2 id="org84ea597">Message</h2>
 <ul>
 <li class="fragment appear">Messages need to be immutable: 
 <ul>
@@ -386,8 +386,8 @@ Bonus: Scala offers <code>case class</code>, use them
 </p>
 
 </section>
-<section id="slide-orgef7d030">
-<h3 id="orgef7d030">Message Path &amp; Routing</h3>
+<section id="slide-org2dc8291">
+<h3 id="org2dc8291">Message Path &amp; Routing</h3>
 <p>
 Messages can be hard to track (to put it mildly)
 </p>
@@ -400,21 +400,14 @@ Messages can be hard to track (to put it mildly)
 </ul>
 
 </section>
-<section id="slide-org6f47d3e">
-<h3 id="org6f47d3e">Message &amp; Actor consistency</h3>
-<p>
-Do not try to be accurate, best effort is almost always enough. It will be consistent eventually
-</p>
-
-</section>
 </section>
 <section>
-<section id="slide-org5d9c737">
-<h2 id="org5d9c737">Future</h2>
-<div class="outline-text-2" id="text-org5d9c737">
+<section id="slide-org04ad0fc">
+<h2 id="org04ad0fc">Future</h2>
+<div class="outline-text-2" id="text-org04ad0fc">
 </div></section>
-<section id="slide-org65e239d">
-<h3 id="org65e239d">Mutable properties</h3>
+<section id="slide-org3f02711">
+<h3 id="org3f02711">Mutable properties</h3>
 <p>
 Actors can mutate properties safely because when processing a message there is no concurrency.
 </p>
@@ -424,8 +417,8 @@ However, you must make sure you are in the same context !
 </p>
 
 </section>
-<section id="slide-org322753e">
-<h3 id="org322753e">Future &amp; context</h3>
+<section id="slide-orge49a45c">
+<h3 id="orge49a45c">Future &amp; context</h3>
 <p>
 Inside a Future, you are no longer inside the Akka message processing context.
 </p>
@@ -449,8 +442,8 @@ Inside a Future, you are no longer inside the Akka message processing context.
 </div>
 
 </section>
-<section id="slide-orgb416a7c">
-<h3 id="orgb416a7c">Future &amp; context - The good way</h3>
+<section id="slide-orge815374">
+<h3 id="orge815374">Future &amp; context - The good way</h3>
 <p>
 Avoid closure and use message to update Actor properties.
 </p>
@@ -479,12 +472,12 @@ Avoid closure and use message to update Actor properties.
 </section>
 </section>
 <section>
-<section id="slide-orgb5c6b2d">
-<h2 id="orgb5c6b2d">Misc</h2>
-<div class="outline-text-2" id="text-orgb5c6b2d">
+<section id="slide-org5d40559">
+<h2 id="org5d40559">Misc</h2>
+<div class="outline-text-2" id="text-org5d40559">
 </div></section>
-<section id="slide-org44758a9">
-<h3 id="org44758a9">EventBus</h3>
+<section id="slide-orge97851c">
+<h3 id="orge97851c">EventBus</h3>
 <p>
 Akka offers a generic event bus mechanism with a customizable classification.
 </p>
@@ -500,8 +493,8 @@ Pretty cool but&#x2026;
 </ul>
 
 </section>
-<section id="slide-orgc5c1277">
-<h3 id="orgc5c1277">Testing - Black or White</h3>
+<section id="slide-org08d4455">
+<h3 id="org08d4455">Testing - Black or White</h3>
 
 <div class="figure">
 <p><img src="./img/testing.png" alt="testing.png" />
@@ -515,8 +508,8 @@ Pretty cool but&#x2026;
 </ul>
 
 </section>
-<section id="slide-org94b049f">
-<h3 id="org94b049f">Refactoring</h3>
+<section id="slide-org476c3d2">
+<h3 id="org476c3d2">Refactoring</h3>
 <p>
 Refactoring can be difficult but some tips can help:
 </p>
@@ -531,23 +524,26 @@ Refactoring can be difficult but some tips can help:
 
 
 </section>
-<section id="slide-orga911dbb">
-<h3 id="orga911dbb">Ask Pattern, Queries, Command</h3>
+<section id="slide-org95de369">
+<h3 id="org95de369">Ask Pattern, Queries, Command</h3>
 <ul>
 <li>The ask pattern is convenient but returns a future so be cautious.</li>
 <li>When used, this pattern creates a temporary actor to handle your query.</li>
-<li>Is there another way ?</li>
 
 </ul>
+<ul class="fragment appear">
+<li>Is there another way ?
 <ul>
-<li class="fragment appear">If you use the pattern all over, you may need to change the design</li>
-<li class="fragment appear">Create a custom actor to handle this query</li>
+<li>If you use the pattern all over, you may need to change the design</li>
+<li>Create a custom actor to handle this query</li>
+
+</ul></li>
 
 </ul>
 
 </section>
-<section id="slide-orgdc057d8">
-<h3 id="orgdc057d8">Actor state</h3>
+<section id="slide-org4843331">
+<h3 id="org4843331">Actor state</h3>
 <p>
 Akka offers convenient ways to handle state inside an actor:
 </p>
@@ -558,8 +554,8 @@ Akka offers convenient ways to handle state inside an actor:
 </ul>
 
 </section>
-<section id="slide-orged0ee14">
-<h3 id="orged0ee14">Coding with style&#x2026;</h3>
+<section id="slide-org4923db3">
+<h3 id="org4923db3">Coding with style&#x2026;</h3>
 <ul>
 <li class="fragment appear">Code consistency can be hard to maintain when evaluating patterns</li>
 <li class="fragment appear">Mixing side-effect (injecting mutable object in an Actor)</li>
@@ -571,8 +567,8 @@ Akka offers convenient ways to handle state inside an actor:
 </section>
 </section>
 <section>
-<section id="slide-orgac67f96">
-<h2 id="orgac67f96">Conclusion</h2>
+<section id="slide-org51dcab6">
+<h2 id="org51dcab6">Conclusion</h2>
 <ul>
 <li>And yet it works, despite all our mistakes&#x2026;</li>
 <li>Designing you system is key</li>
@@ -581,10 +577,14 @@ Akka offers convenient ways to handle state inside an actor:
 </ul>
 
 </section>
-<section id="slide-org61fd152">
-<h3 id="org61fd152">Thank you</h3>
+<section id="slide-org7db0b13">
+<h3 id="org7db0b13">Thank you</h3>
 <p>
 Question ?
+</p>
+
+<p>
+<a href="https://jpthomasset.github.io/slug-meetup-akka/">https://jpthomasset.github.io/slug-meetup-akka/</a>
 </p>
 </section>
 </section>
